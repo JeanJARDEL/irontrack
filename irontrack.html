@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TRIFORGE — Nice 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --iron: #0a0a0f;
+    --iron2: #12121a;
+    --iron3: #1c1c28;
+    --iron4: #252535;
+    --swim: #00b4d8;
+    --swim2: #0077a8;
+    --bike: #f4a261;
+    --bike2: #c97d3a;
+    --run: #e63946;
+    --run2: #b02a35;
+    --renfo: #a8dadc;
+    --done: #2ec46d;
+    --rest: #444460;
+    --text: #f0f0f8;
+    --text2: #9090b0;
+    --text3: #5a5a7a;
+    --accent: #f4a261;
+    --gold: #ffd166;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    background: var(--iron);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:0;
+    opacity:0.4;
+  }
+
+  /* HEADER */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px 14px;
+  }
+  .header-top { display:flex; align-items:center; justify-content:space-between; }
+  .logo { display:flex; align-items:center; gap:10px; }
+  .logo-icon {
+    width:36px; height:36px;
+    background: linear-gradient(135deg, var(--bike), var(--run));
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; position:relative; overflow:hidden;
+  }
+  .logo-icon::after {
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.15));
+  }
+  .logo-name { font-family:'Bebas Neue'; font-size:22px; letter-spacing:2px; color:var(--text); }
+  .logo-sub { font-size:10px; color:var(--text2); letter-spacing:3px; font-weight:500; text-transform:uppercase; margin-top:-3px; }
+  .countdown-pill {
+    background: linear-gradient(135deg, var(--iron3), var(--iron4));
+    border: 1px solid var(--border);
+    border-radius:20px; padding:6px 14px;
+    text-align:center;
+  }
+  .countdown-num { font-family:'Bebas Neue'; font-size:20px; color:var(--gold); line-height:1; }
+  .countdown-lbl { font-size:9px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display:flex; gap:4px; margin-top:12px;
+  }
+  .nav-tab {
+    flex:1; padding:7px 0; border:none; cursor:pointer;
+    font-family:'DM Sans'; font-size:11px; font-weight:600;
+    letter-spacing:1px; text-transform:uppercase;
+    border-radius:8px; transition:all 0.2s;
+    background:transparent; color:var(--text3);
+  }
+  .nav-tab.active { background:var(--iron3); color:var(--text); }
+
+  /* PAGES */
+  .page { display:none; padding:0 0 100px; }
+  .page.active { display:block; }
+
+  /* TODAY PAGE */
+  .today-hero {
+    margin:16px 16px 0;
+    background: linear-gradient(145deg, var(--iron3), var(--iron2));
+    border:1px solid var(--border); border-radius:20px;
+    padding:20px; position:relative; overflow:hidden;
+  }
+  .today-hero::before {
+    content:'';
+    position:absolute; top:-30px; right:-30px;
+    width:120px; height:120px;
+    background: radial-gradient(circle, rgba(244,162,97,0.15) 0%, transparent 70%);
+    border-radius:50%;
+  }
+  .today-date-label { font-size:10px; color:var(--text3); letter-spacing:3px; text-transform:uppercase; }
+  .today-date { font-family:'Bebas Neue'; font-size:32px; color:var(--text); letter-spacing:1px; margin:2px 0; line-height:1; }
+  .today-week { font-size:11px; color:var(--text2); margin-bottom:16px; }
+
+  .sessions-today { display:flex; flex-direction:column; gap:10px; }
+  .session-card {
+    background:rgba(255,255,255,0.04); border-radius:14px;
+    padding:14px 16px; border-left:3px solid;
+    display:flex; align-items:flex-start; gap:12px;
+    position:relative; overflow:hidden; cursor:pointer;
+    transition:all 0.2s;
+  }
+  .session-card:active { transform:scale(0.98); }
+  .session-card.swim { border-color: var(--swim); }
+  .session-card.bike { border-color: var(--bike); }
+  .session-card.run  { border-color: var(--run);  }
+  .session-card.renfo{ border-color: var(--renfo);}
+  .session-card.rest { border-color: var(--rest); opacity:0.6;}
+  .session-card.completed { opacity:0.5; }
+  .session-card.completed::after {
+    content:'✓';
+    position:absolute; right:14px; top:50%; transform:translateY(-50%);
+    font-size:18px; color:var(--done); font-weight:700;
+  }
+  .session-icon { font-size:22px; flex-shrink:0; margin-top:1px; }
+  .session-info { flex:1; min-width:0; }
+  .session-type { font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--text2); }
+  .session-title { font-size:14px; font-weight:600; color:var(--text); margin:2px 0; line-height:1.3; }
+  .session-meta { font-size:11px; color:var(--text3); font-family:'DM Mono'; }
+  .session-desc {
+    font-size:12px; color:var(--text2); margin-top:8px; line-height:1.5;
+    display:none;
+  }
+  .session-card.expanded .session-desc { display:block; }
+  .done-btn {
+    margin-top:10px; padding:8px 16px;
+    background:var(--done); color:#fff;
+    border:none; border-radius:8px; font-size:12px; font-weight:600;
+    cursor:pointer; display:none; width:100%;
+    transition:all 0.2s;
+  }
+  .done-btn:active { transform:scale(0.97); }
+  .session-card.expanded .done-btn { display:block; }
+  .session-card.completed .done-btn { background:var(--iron4); color:var(--text3); }
+
+  .rest-day-card {
+    background:rgba(255,255,255,0.03);
+    border:1px dashed var(--iron4); border-radius:14px;
+    padding:20px; text-align:center; color:var(--text3);
+    font-size:13px; font-style:italic;
+  }
+
+  /* PROGRESS BAR */
+  .progress-section { margin:12px 16px 0; }
+  .progress-label { display:flex; justify-content:space-between; margin-bottom:6px; }
+  .progress-label span { font-size:11px; color:var(--text2); }
+  .progress-label strong { font-size:11px; color:var(--text); font-family:'DM Mono'; }
+  .progress-bar {
+    height:6px; background:var(--iron3); border-radius:3px; overflow:hidden;
+  }
+  .progress-fill {
+    height:100%; border-radius:3px;
+    background:linear-gradient(90deg, var(--swim), var(--bike), var(--run));
+    transition:width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  /* WEEK STRIP */
+  .week-strip { margin:12px 16px 0; }
+  .week-strip-title { font-size:10px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  .days-strip { display:flex; gap:5px; }
+  .day-dot {
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+    cursor:pointer;
+  }
+  .day-dot-label { font-size:9px; color:var(--text3); text-transform:uppercase; font-weight:600; }
+  .day-dot-circle {
+    width:32px; height:32px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700; font-family:'DM Mono';
+    border:2px solid var(--iron3);
+    background:var(--iron2); color:var(--text2);
+    transition:all 0.2s; position:relative; overflow:hidden;
+  }
+  .day-dot.today .day-dot-circle {
+    border-color:var(--gold); color:var(--gold); background:rgba(255,209,102,0.08);
+  }
+  .day-dot.has-session .day-dot-circle { border-color:var(--iron4); }
+  .day-dot.completed-day .day-dot-circle {
+    background:var(--done); border-color:var(--done); color:#fff;
+  }
+  .day-dot.rest-dot .day-dot-circle { opacity:0.4; }
+  .sport-dots { display:flex; gap:2px; margin-top:1px; }
+  .sport-dot { width:5px; height:5px; border-radius:50%; }
+  .sport-dot.swim { background:var(--swim); }
+  .sport-dot.bike { background:var(--bike); }
+  .sport-dot.run  { background:var(--run);  }
+  .sport-dot.renfo{ background:var(--renfo);}
+
+  /* CALENDAR PAGE */
+  .calendar-header { padding:16px 16px 0; }
+  .cal-month-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .cal-month-name { font-family:'Bebas Neue'; font-size:28px; letter-spacing:2px; }
+  .cal-nav-btn {
+    width:36px; height:36px; border-radius:50%;
+    background:var(--iron3); border:1px solid var(--border);
+    color:var(--text); font-size:16px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all 0.15s;
+  }
+  .cal-nav-btn:active { transform:scale(0.9); }
+  .cal-weekdays { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin-bottom:6px; }
+  .cal-wd { text-align:center; font-size:10px; color:var(--text3); font-weight:600; letter-spacing:1px; padding:4px; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; padding:0 16px; }
+  .cal-day {
+    aspect-ratio:1; border-radius:10px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-size:12px; font-family:'DM Mono'; font-weight:500; cursor:pointer;
+    background:var(--iron2); color:var(--text2); gap:2px;
+    transition:all 0.15s; position:relative; overflow:hidden;
+    border:1px solid transparent;
+  }
+  .cal-day:empty { background:transparent; border:none; cursor:default; }
+  .cal-day.other-month { color:var(--text3); opacity:0.3; }
+  .cal-day.today-cal { border-color:var(--gold); color:var(--gold); background:rgba(255,209,102,0.06); }
+  .cal-day.unavailable { background:var(--iron); color:var(--text3); opacity:0.35; text-decoration:line-through; }
+  .cal-day.race-day { background:linear-gradient(135deg,rgba(230,57,70,0.3),rgba(244,162,97,0.3)); border-color:var(--run); color:var(--text); font-weight:700; }
+  .cal-day.completed-cal { background:rgba(46,196,109,0.12); border-color:rgba(46,196,109,0.3); color:var(--done); }
+  .cal-day-num { line-height:1; }
+  .cal-day-sports { display:flex; gap:2px; }
+  .cal-dot { width:4px; height:4px; border-radius:50%; }
+  .cal-dot.swim { background:var(--swim); }
+  .cal-dot.bike { background:var(--bike); }
+  .cal-dot.run  { background:var(--run); }
+  .cal-dot.renfo { background:var(--renfo); }
+
+  /* STATS PAGE */
+  .stats-section { padding:16px; }
+  .stats-title { font-family:'Bebas Neue'; font-size:26px; letter-spacing:2px; margin-bottom:14px; }
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+  .stat-card {
+    background:var(--iron3); border-radius:16px; padding:16px;
+    border:1px solid var(--border);
+  }
+  .stat-val { font-family:'Bebas Neue'; font-size:36px; line-height:1; }
+  .stat-val.swim { color:var(--swim); }
+  .stat-val.bike { color:var(--bike); }
+  .stat-val.run  { color:var(--run);  }
+  .stat-val.renfo{ color:var(--renfo);}
+  .stat-lbl { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
+  .stat-sub { font-size:11px; color:var(--text2); margin-top:2px; }
+
+  .phase-badge {
+    background:linear-gradient(135deg,var(--iron3),var(--iron4));
+    border:1px solid var(--border); border-radius:16px;
+    padding:16px; margin-bottom:10px;
+  }
+  .phase-name { font-family:'Bebas Neue'; font-size:22px; letter-spacing:2px; color:var(--accent); }
+  .phase-desc { font-size:12px; color:var(--text2); margin-top:4px; line-height:1.4; }
+  .phase-week { font-size:11px; color:var(--text3); margin-top:6px; font-family:'DM Mono'; }
+
+  .streak-card {
+    background:linear-gradient(135deg,rgba(255,209,102,0.08),rgba(244,162,97,0.05));
+    border:1px solid rgba(255,209,102,0.2); border-radius:16px;
+    padding:16px; display:flex; align-items:center; gap:14px;
+    margin-bottom:10px;
+  }
+  .streak-fire { font-size:40px; line-height:1; }
+  .streak-num { font-family:'Bebas Neue'; font-size:48px; color:var(--gold); line-height:1; }
+  .streak-lbl { font-size:11px; color:var(--text2); margin-top:2px; }
+
+  .sport-bar-section { background:var(--iron3); border-radius:16px; padding:16px; border:1px solid var(--border); }
+  .sport-bar-title { font-size:11px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
+  .sport-bar-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .sport-bar-icon { font-size:16px; width:24px; }
+  .sport-bar-track { flex:1; height:8px; background:var(--iron2); border-radius:4px; overflow:hidden; }
+  .sport-bar-fill { height:100%; border-radius:4px; transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
+  .sport-bar-fill.swim { background:linear-gradient(90deg,var(--swim2),var(--swim)); }
+  .sport-bar-fill.bike { background:linear-gradient(90deg,var(--bike2),var(--bike)); }
+  .sport-bar-fill.run  { background:linear-gradient(90deg,var(--run2),var(--run));  }
+  .sport-bar-pct { font-size:11px; color:var(--text2); font-family:'DM Mono'; width:30px; text-align:right; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:430px;
+    background:rgba(10,10,15,0.97); backdrop-filter:blur(20px);
+    border-top:1px solid var(--border);
+    display:flex; padding:8px 0 env(safe-area-inset-bottom,8px);
+    z-index:200;
+  }
+  .bottom-btn {
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+    border:none; background:transparent; cursor:pointer; padding:6px;
+    color:var(--text3); transition:color 0.2s;
+  }
+  .bottom-btn.active { color:var(--accent); }
+  .bottom-btn-icon { font-size:22px; line-height:1; }
+  .bottom-btn-lbl { font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+
+  /* ANIMATIONS */
+  @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+  .page.active { animation:slideUp 0.3s ease; }
+
+  /* MODAL */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:300;
+    background:rgba(0,0,0,0.8); backdrop-filter:blur(10px);
+    display:none; align-items:flex-end; justify-content:center;
+  }
+  .modal-overlay.open { display:flex; }
+  .modal-sheet {
+    width:100%; max-width:430px; background:var(--iron2);
+    border-radius:24px 24px 0 0; padding:20px 20px 40px;
+    border-top:1px solid var(--border);
+    animation:slideUp 0.3s ease;
+    max-height:90vh; overflow-y:auto;
+  }
+  .modal-handle { width:40px; height:4px; background:var(--iron4); border-radius:2px; margin:0 auto 16px; }
+  .modal-title { font-family:'Bebas Neue'; font-size:24px; letter-spacing:2px; margin-bottom:4px; }
+  .modal-date { font-size:12px; color:var(--text3); margin-bottom:16px; font-family:'DM Mono'; }
+  .modal-sessions { display:flex; flex-direction:column; gap:10px; }
+  .modal-close-btn {
+    width:100%; margin-top:16px; padding:14px;
+    background:var(--iron3); border:1px solid var(--border);
+    color:var(--text2); border-radius:12px; font-size:14px;
+    cursor:pointer; font-family:'DM Sans'; font-weight:600;
+  }
+
+  .section-divider { height:1px; background:var(--iron3); margin:12px 0; }
+
+  /* TOAST */
+  .toast {
+    position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--done); color:#fff; padding:10px 20px; border-radius:20px;
+    font-size:13px; font-weight:600; z-index:400; opacity:0;
+    transition:all 0.3s; pointer-events:none; white-space:nowrap;
+  }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-icon">🔱</div>
+      <div>
+        <div class="logo-name">TRIFORGE</div>
+        <div class="logo-sub">Nice 2026</div>
+      </div>
+    </div>
+    <div class="countdown-pill">
+      <div class="countdown-num" id="countdownNum">—</div>
+      <div class="countdown-lbl">jours restants</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('today')">Aujourd'hui</button>
+    <button class="nav-tab" onclick="showPage('calendar')">Calendrier</button>
+    <button class="nav-tab" onclick="showPage('stats')">Stats</button>
+  </div>
+</div>
+
+<!-- PAGE TODAY -->
+<div class="page active" id="page-today">
+
+  <div class="today-hero">
+    <div class="today-date-label">Séance du jour</div>
+    <div class="today-date" id="todayDateDisplay">—</div>
+    <div class="today-week" id="todayWeekDisplay">—</div>
+    <div class="sessions-today" id="todaySessions"></div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Progression plan</span>
+      <strong id="progressPct">0%</strong>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="week-strip">
+    <div class="week-strip-title">Cette semaine</div>
+    <div class="days-strip" id="weekStrip"></div>
+  </div>
+
+</div>
+
+<!-- PAGE CALENDAR -->
+<div class="page" id="page-calendar">
+  <div class="calendar-header">
+    <div class="cal-month-nav">
+      <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+      <div class="cal-month-name" id="calMonthTitle">—</div>
+      <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+    </div>
+    <div class="cal-weekdays">
+      <div class="cal-wd">L</div><div class="cal-wd">M</div><div class="cal-wd">M</div>
+      <div class="cal-wd">J</div><div class="cal-wd">V</div><div class="cal-wd">S</div>
+      <div class="cal-wd">D</div>
+    </div>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+</div>
+
+<!-- PAGE STATS -->
+<div class="page" id="page-stats">
+  <div class="stats-section">
+    <div class="stats-title">Mes Stats</div>
+
+    <div class="streak-card">
+      <div class="streak-fire">🔥</div>
+      <div>
+        <div class="streak-num" id="streakNum">0</div>
+        <div class="streak-lbl">jours consécutifs d'entraînement</div>
+      </div>
+    </div>
+
+    <div class="phase-badge" id="phaseBadge">
+      <div class="phase-name" id="phaseName">Base</div>
+      <div class="phase-desc" id="phaseDesc">Construction des fondations aérobies</div>
+      <div class="phase-week" id="phaseWeek">Semaine 1 / 16</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-val swim" id="statSwim">0</div>
+        <div class="stat-lbl">🏊 Natation</div>
+        <div class="stat-sub" id="statSwimSub">séances réalisées</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val bike" id="statBike">0</div>
+        <div class="stat-lbl">🚴 Vélo</div>
+        <div class="stat-sub" id="statBikeSub">sorties réalisées</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val run" id="statRun">0</div>
+        <div class="stat-lbl">🏃 Course</div>
+        <div class="stat-sub" id="statRunSub">sorties réalisées</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val renfo" id="statTotal">0</div>
+        <div class="stat-lbl">✅ Total</div>
+        <div class="stat-sub" id="statTotalSub">séances validées</div>
+      </div>
+    </div>
+
+    <div class="sport-bar-section">
+      <div class="sport-bar-title">Répartition des sports</div>
+      <div class="sport-bar-row">
+        <div class="sport-bar-icon">🏊</div>
+        <div class="sport-bar-track"><div class="sport-bar-fill swim" id="barSwim" style="width:0%"></div></div>
+        <div class="sport-bar-pct" id="pctSwim">0%</div>
+      </div>
+      <div class="sport-bar-row">
+        <div class="sport-bar-icon">🚴</div>
+        <div class="sport-bar-track"><div class="sport-bar-fill bike" id="barBike" style="width:0%"></div></div>
+        <div class="sport-bar-pct" id="pctBike">0%</div>
+      </div>
+      <div class="sport-bar-row">
+        <div class="sport-bar-icon">🏃</div>
+        <div class="sport-bar-track"><div class="sport-bar-fill run" id="barRun" style="width:0%"></div></div>
+        <div class="sport-bar-pct" id="pctRun">0%</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">—</div>
+    <div class="modal-date" id="modalDate">—</div>
+    <div class="modal-sessions" id="modalSessions"></div>
+    <button class="modal-close-btn" onclick="closeModalDirect()">Fermer</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Séance validée 💪</div>
+
+<script>
+// ==================== DATA ====================
+const RACE_DATE = new Date(2026, 5, 28); // June 28 2026
+const PLAN_START = new Date(2026, 2, 9);  // March 9
+
+const UNAVAILABLE = [
+  '2026-04-03','2026-04-04','2026-04-05','2026-04-06','2026-04-07',
+  '2026-05-08','2026-05-09','2026-05-10',
+  '2026-05-27','2026-05-28','2026-05-29','2026-05-30',
+  '2026-06-06','2026-06-07'
+];
+
+function d(y,m,day){ return `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`; }
+
+// Full training plan - key: YYYY-MM-DD
+const PLAN = {
+  // WEEK 1 — 9–15 mars
+  [d(2026,3,9)]: [
+    {type:'swim',icon:'🏊',title:'Natation technique',meta:'40 min • Midi',desc:'10\' échauffement, 8×50 technique/rythme, 6×50 progressif, 5\' retour au calme.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers, mobilité : plank 60\', side plank 45\' chaque côté, single-leg deadlift 10/jambe, glute bridge 15 reps.'}
+  ],
+  [d(2026,3,10)]: [
+    {type:'run',icon:'🏃',title:'Intervalles course',meta:'45 min • Soir',desc:'6×800m à 4\'00–4\'10/km, récupération 2\' marche/footing entre chaque.'}
+  ],
+  [d(2026,3,11)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km, allure conversation. Récupération active.'}
+  ],
+  [d(2026,3,12)]: [
+    {type:'swim',icon:'🏊',title:'Natation endurance',meta:'40 min • Midi',desc:'3×400m à allure confortable, travail technique entre les séries.'}
+  ],
+  [d(2026,3,14)]: [
+    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'2h15 vélo + 15\' run',desc:'2h15 à 70–75% FTP, inclure 3×10\' à seuil si ressenti bon. Enchaîner immédiatement 15\' run facile.'}
+  ],
+  [d(2026,3,15)]: [
+    {type:'run',icon:'🏃',title:'Long run',meta:'1h15 • Facile',desc:'Allure facile 6\'10–6\'30/km. Objectif : fondation aérobie, rester confortable.'}
+  ],
+  // WEEK 2 — 16–22 mars
+  [d(2026,3,16)]: [
+    {type:'swim',icon:'🏊',title:'Natation technique',meta:'45 min • Midi',desc:'Technique + 8×100m modéré. Récupération 20–30\' entre répétitions.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers, mobilité.'}
+  ],
+  [d(2026,3,17)]: [
+    {type:'run',icon:'🏃',title:'Intervalles 5×1km',meta:'50 min • Soir',desc:'5×1 km à 4\'00/km, récupération 3\' entre chaque.'}
+  ],
+  [d(2026,3,18)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km, allure conversation.'}
+  ],
+  [d(2026,3,19)]: [
+    {type:'swim',icon:'🏊',title:'Natation endurance + drills',meta:'40 min • Midi',desc:'Endurance + drills spécifiques nage crawl.'},
+    {type:'run',icon:'🏃',title:'Tempo run',meta:'30–40 min • Soir',desc:'30–40\' à 4\'30–4\'40/km allure tempo contrôlée.'}
+  ],
+  [d(2026,3,21)]: [
+    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'3h vélo + 20\' run',desc:'3h incl. 2×20\' à seuil (RPE 7/10). Brick : 20\' run immédiatement après.'}
+  ],
+  [d(2026,3,22)]: [
+    {type:'run',icon:'🏃',title:'Long run',meta:'1h30 • Facile',desc:'1h30 allure facile. Bien s\'hydrater.'}
+  ],
+  // WEEK 3 — 23–29 mars
+  [d(2026,3,23)]: [
+    {type:'swim',icon:'🏊',title:'Natation technique',meta:'45 min • Midi',desc:'Technique + 10×100m.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers, mobilité.'}
+  ],
+  [d(2026,3,24)]: [
+    {type:'run',icon:'🏃',title:'VMA courte',meta:'50 min • Soir',desc:'12×400m à 3\'50/km, récupération 90\' entre chaque.'}
+  ],
+  [d(2026,3,25)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,3,26)]: [
+    {type:'swim',icon:'🏊',title:'Natation endurance',meta:'40 min • Midi',desc:'Endurance douce, travail respiration.'}
+  ],
+  [d(2026,3,28)]: [
+    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'3h15 vélo + 25\' run',desc:'3h15 endurance, incl. 3×15\' à seuil. Brick : 25\' run après.'}
+  ],
+  [d(2026,3,29)]: [
+    {type:'run',icon:'🏃',title:'Long run progressif',meta:'1h40',desc:'1h40. Si ressenti bon, ajouter 20\' à allure marathon en fin de sortie.'}
+  ],
+  // WEEK 4 — 30 mars–2 avril (3–7 indisponibles)
+  [d(2026,3,30)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Séance libre, technique ou endurance selon forme.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers, mobilité.'}
+  ],
+  [d(2026,3,31)]: [
+    {type:'run',icon:'🏃',title:'Intervalles 6×1km',meta:'55 min • Soir',desc:'6×1 km à 4\'00/km, récupération 3\'.'}
+  ],
+  [d(2026,4,1)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,4,2)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
+    {type:'run',icon:'🏃',title:'Tempo 40\'',meta:'40 min • Soir',desc:'Allure tempo 4\'30–4\'40/km.'}
+  ],
+  // WEEK 5 — 8–12 avril (6–7 indisponibles)
+  [d(2026,4,8)]: [
+    {type:'run',icon:'🏃',title:'10 km facile (reprise)',meta:'40 min • Soir',desc:'10 km à 6\'/km. Reprise douce après indisponibilité.'}
+  ],
+  [d(2026,4,9)]: [
+    {type:'swim',icon:'🏊',title:'Natation — reprise',meta:'45 min • Midi',desc:'Reprise douce, technique, pas d\'effort intense.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, mobilité.'}
+  ],
+  [d(2026,4,10)]: [
+    {type:'swim',icon:'🏊',title:'Natation option',meta:'40 min • Midi',desc:'Séance optionnelle si énergie disponible.'}
+  ],
+  [d(2026,4,11)]: [
+    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'3h vélo + 20\' run',desc:'Rythme facile, reprise en douceur. Brick 20\' run.'}
+  ],
+  [d(2026,4,12)]: [
+    {type:'run',icon:'🏃',title:'Long run facile',meta:'1h30',desc:'1h30 allure facile. Reprise progressive.'}
+  ],
+  // WEEK 6 — 13–19 avril (Build 1)
+  [d(2026,4,13)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers.'}
+  ],
+  [d(2026,4,14)]: [
+    {type:'run',icon:'🏃',title:'Intervalles 8×800m',meta:'55 min • Soir',desc:'8×800m à 4\'00/km, récupération 2\'.'}
+  ],
+  [d(2026,4,15)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,4,16)]: [
+    {type:'swim',icon:'🏊',title:'Natation endurance',meta:'40 min • Midi',desc:'Endurance + travail technique.'},
+    {type:'run',icon:'🏃',title:'Tempo 45\'',meta:'45 min • Soir',desc:'45\' à allure tempo.'}
+  ],
+  [d(2026,4,18)]: [
+    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'3h30 vélo + 25\' run',desc:'3h30 incl. 3×20\' à seuil. Brick : 25\' run après.'}
+  ],
+  [d(2026,4,19)]: [
+    {type:'run',icon:'🏃',title:'Long run',meta:'1h45',desc:'1h45. Ajouter 20\' à marathon pace en fin si ressenti bon.'}
+  ],
+  // WEEK 7 — 20–26 avril (Build 2)
+  [d(2026,4,20)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, mobilité.'}
+  ],
+  [d(2026,4,21)]: [
+    {type:'run',icon:'🏃',title:'Fartlek / 6×1km',meta:'55 min • Soir',desc:'Fartlek ou 6×1 km selon humeur. Rester à l\'effort soutenu.'}
+  ],
+  [d(2026,4,22)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,4,23)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
+    {type:'run',icon:'🏃',title:'Seuil 40\'',meta:'40 min • Soir',desc:'40\' seuil contrôlé.'}
+  ],
+  [d(2026,4,25)]: [
+    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'4h vélo + 30\' run',desc:'4h endurance, incl. 2×30\' à seuil. Brick : 30\' run après.'}
+  ],
+  [d(2026,4,26)]: [
+    {type:'run',icon:'🏃',title:'Long run progressif',meta:'2h',desc:'2h allure progressive, commencer facile puis monter.'}
+  ],
+  // WEEK 8 — 27 avril – 3 mai
+  [d(2026,4,27)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, fessiers.'}
+  ],
+  [d(2026,4,28)]: [
+    {type:'run',icon:'🏃',title:'Intervalles',meta:'50 min • Soir',desc:'Séance intervalles selon forme.'}
+  ],
+  [d(2026,4,29)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,4,30)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
+    {type:'run',icon:'🏃',title:'Tempo',meta:'45 min • Soir',desc:'Tempo run.'}
+  ],
+  [d(2026,5,2)]: [
+    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'4h15 vélo + 30\' run',desc:'4h15 incl. 3×20\' à seuil. Brick : 30\' run après. Tester nutrition.'}
+  ],
+  [d(2026,5,3)]: [
+    {type:'run',icon:'🏃',title:'Long run',meta:'2h15',desc:'2h15 allure facile à modérée.'}
+  ],
+  // WEEK 9 — 4–7 mai (8–10 indisponibles)
+  [d(2026,5,4)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, mobilité.'}
+  ],
+  [d(2026,5,5)]: [
+    {type:'run',icon:'🏃',title:'Intervalles',meta:'50 min • Soir',desc:'Séance intervalles.'}
+  ],
+  [d(2026,5,6)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,5,7)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
+    {type:'run',icon:'🏃',title:'Tempo',meta:'45 min • Soir',desc:'Tempo run seuil.'}
+  ],
+  // WEEK 10 — 11–17 mai (Build 4)
+  [d(2026,5,11)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, fessiers.'}
+  ],
+  [d(2026,5,12)]: [
+    {type:'run',icon:'🏃',title:'Intervalles',meta:'55 min • Soir',desc:'Intervalles course.'}
+  ],
+  [d(2026,5,13)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,5,14)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
+    {type:'run',icon:'🏃',title:'Seuil 45\'',meta:'45 min • Soir',desc:'45\' allure seuil.'}
+  ],
+  [d(2026,5,16)]: [
+    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'4h30 vélo + 30\' run',desc:'4h30 incl. 3×25\' à seuil. Brick : 30\' run après. Tester nutrition/hydratation.'}
+  ],
+  [d(2026,5,17)]: [
+    {type:'run',icon:'🏃',title:'Long run',meta:'2h30',desc:'2h30. Ajouter 30\' à marathon pace en fin si OK.'}
+  ],
+  // WEEK 11 — 18–24 mai (Spécifique 1)
+  [d(2026,5,18)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, fessiers.'}
+  ],
+  [d(2026,5,19)]: [
+    {type:'run',icon:'🏃',title:'Tempo long',meta:'50 min • Soir',desc:'Tempo long 50\' : 10\' facile, 30\' tempo 4\'40/km, 10\' cool-down.'}
+  ],
+  [d(2026,5,20)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,5,21)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
+    {type:'run',icon:'🏃',title:'Seuil',meta:'45 min • Soir',desc:'Seuil.'}
+  ],
+  [d(2026,5,23)]: [
+    {type:'bike',icon:'🚴',title:'Simulation nutrition vélo',meta:'5h vélo + 30\' run',desc:'5h — simulation COMPLÈTE nutrition/hydratation tenue de course. Brick 30\' run après. Objectif principal : tester stratégie nutrition.'}
+  ],
+  [d(2026,5,24)]: [
+    {type:'run',icon:'🏃',title:'Long run marathon',meta:'2h45',desc:'2h45 rythme marathon progressif. Phase spécifique.'}
+  ],
+  // WEEK 12 — 25–31 mai (très allégée)
+  [d(2026,5,25)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Séance technique.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage léger.'}
+  ],
+  [d(2026,5,26)]: [
+    {type:'run',icon:'🏃',title:'Intervalles légers',meta:'45 min • Soir',desc:'Intervalles légers, ne pas se surpasser avant la période d\'indisponibilité.'}
+  ],
+  [d(2026,5,31)]: [
+    {type:'bike',icon:'🚴',title:'Reprise douce',meta:'1h30 vélo OU 45\' run',desc:'Vélo facile 1h30 ou run 45\' selon énergie. Ne pas forcer.'}
+  ],
+  // WEEK 13 — 1–5 juin (6–7 indisponibles)
+  [d(2026,6,1)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, mobilité.'}
+  ],
+  [d(2026,6,2)]: [
+    {type:'run',icon:'🏃',title:'Intervalles',meta:'55 min • Soir',desc:'Intervalles course spécifique.'}
+  ],
+  [d(2026,6,3)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,6,4)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
+    {type:'run',icon:'🏃',title:'Tempo 45\'',meta:'45 min • Soir',desc:'Tempo 45\'.'}
+  ],
+  [d(2026,6,5)]: [
+    {type:'bike',icon:'🚴',title:'Brick (vendredi)',meta:'2h vélo + 20\' run',desc:'Si 6–7 juin indisponibles : brick avancé au vendredi. 2h vélo + 20\' run.'}
+  ],
+  // WEEK 14 — 8–14 juin (Peaking)
+  [d(2026,6,8)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
+    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, fessiers.'}
+  ],
+  [d(2026,6,9)]: [
+    {type:'run',icon:'🏃',title:'Course spécifique',meta:'55 min • Soir',desc:'10–12 km avec 6 km à marathon pace (5\'40/km). Objectif : ressentir le rythme cible.'}
+  ],
+  [d(2026,6,10)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  ],
+  [d(2026,6,11)]: [
+    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
+    {type:'run',icon:'🏃',title:'Seuil court',meta:'40 min • Soir',desc:'Seuil court.'}
+  ],
+  [d(2026,6,13)]: [
+    {type:'bike',icon:'🚴',title:'Simulation course PEAK',meta:'5h–5h30 vélo + 30\' run',desc:'5–5h30 — simulation complète : tenue de course, nutrition, intensité course. Brick 30\' run après à marathon pace. Séance clé !'}
+  ],
+  [d(2026,6,14)]: [
+    {type:'run',icon:'🏃',title:'Long run final',meta:'2h30–3h',desc:'2h30 à 3h avec rythme marathon cible en fin. Dernière grosse sortie.'}
+  ],
+  // WEEK 15 — 15–21 juin (Taper 1)
+  [d(2026,6,15)]: [
+    {type:'swim',icon:'🏊',title:'Natation facile',meta:'40 min • Midi',desc:'Facile, technique, plaisir. Pas d\'effort.'},
+    {type:'renfo',icon:'💪',title:'Renfo léger',meta:'20 min',desc:'Renfo léger, mobilité douce.'}
+  ],
+  [d(2026,6,16)]: [
+    {type:'run',icon:'🏃',title:'Allures marathon',meta:'40 min • Soir',desc:'40\' avec 3×5\' à marathon pace (5\'40/km). Rester frais.'}
+  ],
+  [d(2026,6,17)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km. Taper en cours — conserver les jambes.'}
+  ],
+  [d(2026,6,18)]: [
+    {type:'swim',icon:'🏊',title:'Natation technique',meta:'30 min • Midi',desc:'Technique uniquement, très facile.'}
+  ],
+  [d(2026,6,19)]: [
+    {type:'bike',icon:'🚴',title:'Vélo facile',meta:'1h30',desc:'Pédalage fluide, cadence légère. Pas d\'effort.'}
+  ],
+  [d(2026,6,20)]: [
+    {type:'bike',icon:'🚴',title:'Vélo quelques accélérations',meta:'2h vélo + 15\' run',desc:'2h avec quelques accélérations courtes pour garder les sensations. Brick 15\' run.'}
+  ],
+  [d(2026,6,21)]: [
+    {type:'run',icon:'🏃',title:'Run facile',meta:'1h15',desc:'1h15 très facile. Profiter.'}
+  ],
+  // WEEK 16 — 22–28 juin (Taper final)
+  [d(2026,6,22)]: [
+    {type:'swim',icon:'🏊',title:'Natation très facile',meta:'30 min • Midi',desc:'Très facile. Sentir l\'eau. Mobilité.'}
+  ],
+  [d(2026,6,23)]: [
+    {type:'run',icon:'🏃',title:'Sortie très facile',meta:'30–40 min',desc:'Très facile. Garder les jambes légères.'}
+  ],
+  [d(2026,6,24)]: [
+    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min',desc:'10 km facile. Vérifier le matériel de course.'}
+  ],
+  [d(2026,6,25)]: [
+    {type:'swim',icon:'🏊',title:'Natation technique finale',meta:'20–30 min • Midi',desc:'Technique uniquement. Préparer la nutrition de course.'}
+  ],
+  [d(2026,6,26)]: [
+    {type:'bike',icon:'🚴',title:'Vélo très facile (optionnel)',meta:'45 min',desc:'Optionnel. Pédalage très léger ou repos complet. Préparer le matériel transition.'}
+  ],
+  [d(2026,6,28)]: [
+    {type:'run',icon:'🏃',title:'🏆 IRONMAN NICE — JOUR J',meta:'Race day • 28 juin 2026',desc:'Natation contrôlée. Vélo à puissance cible. 10–15 premiers km run très contrôlés. Objectif : 12h. PROFITE DE CHAQUE INSTANT ! 🔱'}
+  ],
+};
+
+// ==================== STATE ====================
+let completedSessions = JSON.parse(localStorage.getItem('triforge_completed') || '{}');
+let currentCalMonth = new Date().getMonth();
+let currentCalYear = new Date().getFullYear();
+
+function saveCompleted() {
+  localStorage.setItem('triforge_completed', JSON.stringify(completedSessions));
+}
+
+function getToday() {
+  const n = new Date();
+  return d(n.getFullYear(), n.getMonth()+1, n.getDate());
+}
+
+function formatDateKey(dateKey) {
+  const [y,m,day] = dateKey.split('-').map(Number);
+  const dt = new Date(y,m-1,day);
+  const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  return `${days[dt.getDay()]} ${day} ${months[m-1]} ${y}`;
+}
+
+function getWeekNumber(dateKey) {
+  const [y,m,day] = dateKey.split('-').map(Number);
+  const dt = new Date(y,m-1,day);
+  const diff = (dt - PLAN_START) / (1000*60*60*24);
+  return Math.floor(diff/7) + 1;
+}
+
+function getPhase(weekNum) {
+  if (weekNum <= 4) return {name:'BASE', desc:'Construction des fondations aérobies. Volume modéré, technique.', color:'var(--swim)'};
+  if (weekNum <= 8) return {name:'BUILD', desc:'Augmentation du volume et de l\'intensité. Sorties longues progressives.', color:'var(--bike)'};
+  if (weekNum <= 12) return {name:'SPÉCIFIQUE', desc:'Simulations course, nutrition, intensités spécifiques Ironman.', color:'var(--run)'};
+  if (weekNum <= 14) return {name:'PEAKING', desc:'Volume max. Dernières séances longues. Pic de forme.', color:'var(--gold)'};
+  return {name:'TAPER', desc:'Réduction progressive. Fraîcheur maximale pour le jour J.', color:'var(--done)'};
+}
+
+// ==================== COUNTDOWN ====================
+function updateCountdown() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diff = Math.ceil((RACE_DATE - today) / (1000*60*60*24));
+  document.getElementById('countdownNum').textContent = diff > 0 ? diff : diff === 0 ? '🏆' : '✓';
+}
+
+// ==================== TODAY PAGE ====================
+function renderToday() {
+  const todayKey = getToday();
+  const [y,m,day] = todayKey.split('-').map(Number);
+  const dt = new Date(y,m-1,day);
+  const dayNames = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const monthNames = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+
+  document.getElementById('todayDateDisplay').textContent =
+    `${dayNames[dt.getDay()]} ${day} ${monthNames[m-1]}`;
+
+  const wk = getWeekNumber(todayKey);
+  const phase = getPhase(wk);
+  document.getElementById('todayWeekDisplay').textContent =
+    `Semaine ${Math.min(wk,16)} • Phase ${phase.name}`;
+
+  const sessionsDiv = document.getElementById('todaySessions');
+  const sessions = PLAN[todayKey];
+  const isUnavailable = UNAVAILABLE.includes(todayKey);
+
+  if (isUnavailable) {
+    sessionsDiv.innerHTML = '<div class="rest-day-card">📵 Jour indisponible — repos complet</div>';
+    return;
+  }
+
+  if (!sessions || sessions.length === 0) {
+    sessionsDiv.innerHTML = '<div class="rest-day-card">💤 Jour de repos actif — récupération</div>';
+    return;
+  }
+
+  sessionsDiv.innerHTML = sessions.map((s,i) => {
+    const key = `${todayKey}_${i}`;
+    const done = completedSessions[key];
+    return `
+      <div class="session-card ${s.type}${done?' completed':''}" onclick="toggleSession('${todayKey}',${i},this)">
+        <div class="session-icon">${s.icon}</div>
+        <div class="session-info">
+          <div class="session-type">${s.type}</div>
+          <div class="session-title">${s.title}</div>
+          <div class="session-meta">${s.meta}</div>
+          <div class="session-desc">${s.desc}</div>
+          <button class="done-btn" onclick="markDone('${todayKey}',${i},event)">${done?'✓ Validée — refaire ?':'✅ Marquer comme réalisée'}</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  renderWeekStrip();
+  updateProgress();
+}
+
+function toggleSession(dateKey, idx, el) {
+  el.classList.toggle('expanded');
+}
+
+function markDone(dateKey, idx, e) {
+  e.stopPropagation();
+  const key = `${dateKey}_${idx}`;
+  completedSessions[key] = !completedSessions[key];
+  saveCompleted();
+  renderToday();
+  updateStats();
+  if (completedSessions[key]) showToast('Séance validée 💪');
+  else showToast('Séance dévalidée');
+}
+
+function renderWeekStrip() {
+  const todayKey = getToday();
+  const [y,m,day] = todayKey.split('-').map(Number);
+  const dt = new Date(y,m-1,day);
+  const dow = dt.getDay(); // 0=sun
+  const mondayOffset = dow === 0 ? -6 : 1 - dow;
+  const monday = new Date(dt);
+  monday.setDate(dt.getDate() + mondayOffset);
+
+  const strip = document.getElementById('weekStrip');
+  const shortDays = ['L','M','M','J','V','S','D'];
+  let html = '';
+
+  for (let i=0;i<7;i++) {
+    const cur = new Date(monday);
+    cur.setDate(monday.getDate()+i);
+    const key = d(cur.getFullYear(), cur.getMonth()+1, cur.getDate());
+    const isToday = key === todayKey;
+    const sessions = PLAN[key] || [];
+    const isUnavail = UNAVAILABLE.includes(key);
+    const allDone = sessions.length > 0 && sessions.every((_,si) => completedSessions[`${key}_${si}`]);
+
+    let cls = 'day-dot';
+    if (isToday) cls += ' today';
+    if (sessions.length > 0) cls += ' has-session';
+    if (allDone) cls += ' completed-day';
+    if (isUnavail) cls += ' rest-dot';
+
+    const sports = [...new Set(sessions.map(s=>s.type))];
+    const sportDots = sports.map(t=>`<div class="sport-dot ${t}"></div>`).join('');
+
+    html += `<div class="${cls}" onclick="dayClick('${key}')">
+      <div class="day-dot-label">${shortDays[i]}</div>
+      <div class="day-dot-circle">${cur.getDate()}</div>
+      <div class="sport-dots">${sportDots}</div>
+    </div>`;
+  }
+  strip.innerHTML = html;
+}
+
+function updateProgress() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const totalDays = Math.ceil((RACE_DATE - PLAN_START) / (1000*60*60*24));
+  const elapsed = Math.max(0, Math.ceil((today - PLAN_START) / (1000*60*60*24)));
+  const pct = Math.min(100, Math.round(elapsed/totalDays*100));
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+}
+
+// ==================== CALENDAR ====================
+function renderCalendar() {
+  const y = currentCalYear, m = currentCalMonth;
+  const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  document.getElementById('calMonthTitle').textContent = `${monthNames[m]} ${y}`;
+
+  const firstDay = new Date(y,m,1);
+  const lastDay = new Date(y,m+1,0);
+  const startDow = firstDay.getDay(); // 0=sun
+  const offset = startDow === 0 ? 6 : startDow - 1; // Mon=0
+
+  const todayKey = getToday();
+  const grid = document.getElementById('calGrid');
+  let html = '';
+
+  for (let i=0;i<offset;i++) html += '<div></div>';
+
+  for (let day=1; day<=lastDay.getDate(); day++) {
+    const key = d(y,m+1,day);
+    const sessions = PLAN[key] || [];
+    const isToday = key === todayKey;
+    const isUnavail = UNAVAILABLE.includes(key);
+    const isRace = key === '2026-06-28';
+    const allDone = sessions.length > 0 && sessions.every((_,si) => completedSessions[`${key}_${si}`]);
+
+    let cls = 'cal-day';
+    if (isToday) cls += ' today-cal';
+    if (isUnavail) cls += ' unavailable';
+    if (isRace) cls += ' race-day';
+    else if (allDone) cls += ' completed-cal';
+
+    const sports = [...new Set(sessions.map(s=>s.type))];
+    const dots = sports.map(t=>`<div class="cal-dot ${t}"></div>`).join('');
+
+    html += `<div class="${cls}" onclick="dayClick('${key}')">
+      <div class="cal-day-num">${isRace?'🏆':day}</div>
+      <div class="cal-day-sports">${dots}</div>
+    </div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function changeMonth(dir) {
+  currentCalMonth += dir;
+  if (currentCalMonth < 0) { currentCalMonth = 11; currentCalYear--; }
+  if (currentCalMonth > 11) { currentCalMonth = 0; currentCalYear++; }
+  renderCalendar();
+}
+
+// ==================== DAY MODAL ====================
+function dayClick(dateKey) {
+  const sessions = PLAN[dateKey] || [];
+  const isUnavail = UNAVAILABLE.includes(dateKey);
+  const isRace = dateKey === '2026-06-28';
+
+  document.getElementById('modalDate').textContent = formatDateKey(dateKey);
+  document.getElementById('modalTitle').textContent = isRace ? '🏆 IRONMAN NICE' : isUnavail ? '📵 Indisponible' : sessions.length ? 'Séances' : '💤 Repos';
+
+  if (isUnavail) {
+    document.getElementById('modalSessions').innerHTML = '<div class="rest-day-card">Jour indisponible — aucune séance prévue.</div>';
+  } else if (!sessions.length) {
+    document.getElementById('modalSessions').innerHTML = '<div class="rest-day-card">Jour de repos actif. Récupération, sommeil, mobilité douce.</div>';
+  } else {
+    document.getElementById('modalSessions').innerHTML = sessions.map((s,i) => {
+      const key = `${dateKey}_${i}`;
+      const done = completedSessions[key];
+      return `
+        <div class="session-card ${s.type}${done?' completed':''}">
+          <div class="session-icon">${s.icon}</div>
+          <div class="session-info">
+            <div class="session-type">${s.type}</div>
+            <div class="session-title">${s.title}</div>
+            <div class="session-meta">${s.meta}</div>
+            <div class="session-desc" style="display:block">${s.desc}</div>
+            <button class="done-btn" style="display:block" onclick="markDoneModal('${dateKey}',${i})">${done?'✓ Validée — refaire ?':'✅ Marquer comme réalisée'}</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function markDoneModal(dateKey, idx) {
+  const key = `${dateKey}_${idx}`;
+  completedSessions[key] = !completedSessions[key];
+  saveCompleted();
+  dayClick(dateKey);
+  renderCalendar();
+  renderToday();
+  updateStats();
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+// ==================== STATS ====================
+function updateStats() {
+  let swim=0, bike=0, run=0, total=0;
+  for (const [key, val] of Object.entries(completedSessions)) {
+    if (!val) continue;
+    const [dateKey, idx] = key.split('_');
+    const sessions = PLAN[dateKey];
+    if (!sessions || !sessions[idx]) continue;
+    const t = sessions[idx].type;
+    if (t==='swim') swim++;
+    else if (t==='bike') bike++;
+    else if (t==='run') run++;
+    total++;
+  }
+
+  document.getElementById('statSwim').textContent = swim;
+  document.getElementById('statBike').textContent = bike;
+  document.getElementById('statRun').textContent = run;
+  document.getElementById('statTotal').textContent = total;
+
+  const sumS = swim+bike+run;
+  if (sumS > 0) {
+    document.getElementById('barSwim').style.width = (swim/sumS*100)+'%';
+    document.getElementById('barBike').style.width = (bike/sumS*100)+'%';
+    document.getElementById('barRun').style.width = (run/sumS*100)+'%';
+    document.getElementById('pctSwim').textContent = Math.round(swim/sumS*100)+'%';
+    document.getElementById('pctBike').textContent = Math.round(bike/sumS*100)+'%';
+    document.getElementById('pctRun').textContent = Math.round(run/sumS*100)+'%';
+  }
+
+  // Streak
+  let streak = 0;
+  const today = new Date();
+  for (let i=0;i<60;i++) {
+    const dt = new Date(today);
+    dt.setDate(today.getDate()-i);
+    const key = d(dt.getFullYear(), dt.getMonth()+1, dt.getDate());
+    const sessions = PLAN[key];
+    if (!sessions || sessions.length === 0) continue;
+    const anyDone = sessions.some((_,si) => completedSessions[`${key}_${si}`]);
+    if (anyDone) streak++;
+    else if (i > 0) break;
+  }
+  document.getElementById('streakNum').textContent = streak;
+
+  // Phase
+  const wk = getWeekNumber(getToday());
+  const phase = getPhase(Math.min(wk,16));
+  document.getElementById('phaseName').textContent = phase.name;
+  document.getElementById('phaseDesc').textContent = phase.desc;
+  document.getElementById('phaseWeek').textContent = `Semaine ${Math.min(wk,16)} sur 16`;
+}
+
+// ==================== NAVIGATION ====================
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  event.target.classList.add('active');
+  if (name==='calendar') renderCalendar();
+  if (name==='stats') updateStats();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// ==================== INIT ====================
+updateCountdown();
+renderToday();
+updateStats();
+setInterval(updateCountdown, 60000);
+
+// Init calendar to March 2026 if before plan start
+const n = new Date();
+if (n < PLAN_START) {
+  currentCalMonth = 2; // March
+  currentCalYear = 2026;
+}
+</script>
+</body>
+</html>
