@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TRIFORGE — Nice 2026</title>
+<title>TRIFORGE — Vichy 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -132,6 +132,7 @@
   .session-card.bike { border-color: var(--bike); }
   .session-card.run  { border-color: var(--run);  }
   .session-card.renfo{ border-color: var(--renfo);}
+  .session-card.chaleur{ border-color: var(--gold); }
   .session-card.rest { border-color: var(--rest); opacity:0.6;}
   .session-card.completed { opacity:0.5; }
   .session-card.completed::after {
@@ -212,6 +213,8 @@
   .sport-dot.bike { background:var(--bike); }
   .sport-dot.run  { background:var(--run);  }
   .sport-dot.renfo{ background:var(--renfo);}
+  .sport-dot.chaleur{ background:var(--gold); }
+  .sport-dot.rest{ background:var(--rest); }
 
   /* CALENDAR PAGE */
   .calendar-header { padding:16px 16px 0; }
@@ -249,6 +252,8 @@
   .cal-dot.bike { background:var(--bike); }
   .cal-dot.run  { background:var(--run); }
   .cal-dot.renfo { background:var(--renfo); }
+  .cal-dot.chaleur { background:var(--gold); }
+  .cal-dot.rest { background:var(--rest); }
 
   /* STATS PAGE */
   .stats-section { padding:16px; }
@@ -365,7 +370,7 @@
       <div class="logo-icon">🔱</div>
       <div>
         <div class="logo-name">TRIFORGE</div>
-        <div class="logo-sub">Nice 2026</div>
+        <div class="logo-sub">Vichy 2026</div>
       </div>
     </div>
     <div class="countdown-pill">
@@ -438,7 +443,7 @@
     <div class="phase-badge" id="phaseBadge">
       <div class="phase-name" id="phaseName">Base</div>
       <div class="phase-desc" id="phaseDesc">Construction des fondations aérobies</div>
-      <div class="phase-week" id="phaseWeek">Semaine 1 / 16</div>
+      <div class="phase-week" id="phaseWeek">Semaine 1 / 6</div>
     </div>
 
     <div class="stats-grid">
@@ -502,334 +507,167 @@
 
 <script>
 // ==================== DATA ====================
-const RACE_DATE = new Date(2026, 5, 28); // June 28 2026
-const PLAN_START = new Date(2026, 2, 9);  // March 9
+const RACE_DATE = new Date(2026, 7, 23); // 23 août 2026
+const PLAN_START = new Date(2026, 6, 13); // 13 juillet 2026
 
-const UNAVAILABLE = [
-  '2026-04-03','2026-04-04','2026-04-05','2026-04-06','2026-04-07',
-  '2026-05-08','2026-05-09','2026-05-10',
-  '2026-05-27','2026-05-28','2026-05-29','2026-05-30',
-  '2026-06-06','2026-06-07'
-];
+const UNAVAILABLE = [];
 
 function d(y,m,day){ return `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`; }
 
 // Full training plan - key: YYYY-MM-DD
 const PLAN = {
-  // WEEK 1 — 9–15 mars
-  [d(2026,3,9)]: [
-    {type:'swim',icon:'🏊',title:'Natation technique',meta:'40 min • Midi',desc:'10\' échauffement, 8×50 technique/rythme, 6×50 progressif, 5\' retour au calme.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers, mobilité : plank 60\', side plank 45\' chaque côté, single-leg deadlift 10/jambe, glute bridge 15 reps.'}
+  // ===== SEMAINE 1 — 13–19 juillet · VOLUME 1 (~13h30) =====
+  [d(2026,7,13)]: [
+    {type:'swim',icon:'🏊',title:`Natation aéro + technique`,meta:`2500 m • Midi`,desc:`400 échauffement · 6×50 éducatifs (25 éduc / 25 nage) r20" · 8×100 à 1:50/100 r20" · 4×200 à 1:55/100 r30" · 200 souple.`},
+    {type:'renfo',icon:'💪',title:`Renforcement + chaleur passive`,meta:`45 min • Soir`,desc:`Gainage, squats, fentes, soulevé roumain léger, tirage. Puis maintien au chaud 25' (tenue chaude, sans se rafraîchir) + douche chaude 10–15'.`}
   ],
-  [d(2026,3,10)]: [
-    {type:'run',icon:'🏃',title:'Intervalles course',meta:'45 min • Soir',desc:'6×800m à 4\'00–4\'10/km, récupération 2\' marche/footing entre chaque.'}
+  [d(2026,7,14)]: [
+    {type:'run',icon:'🏃',title:`Intervalles 2×(6×400 m)`,meta:`~12 km • Soir (au frais)`,desc:`20' EF + gammes · 2 blocs de 6×400 m à 4:50/km, r=1' trot, R=3' entre blocs · 10' retour au calme. Maintien au chaud 20' après la séance.`}
   ],
-  [d(2026,3,11)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km, allure conversation. Récupération active.'}
+  [d(2026,7,15)]: [
+    {type:'run',icon:'🏃',title:`EF chaleur`,meta:`1h • Milieu de journée`,desc:`Exposition chaleur principale de la semaine. 7:00–7:15/km, terrain plat, pilotage à la FC/RPE (pas à l'allure). Bidon avec électrolytes (500–800 mg sodium/L).`}
   ],
-  [d(2026,3,12)]: [
-    {type:'swim',icon:'🏊',title:'Natation endurance',meta:'40 min • Midi',desc:'3×400m à allure confortable, travail technique entre les séries.'}
+  [d(2026,7,16)]: [
+    {type:'swim',icon:'🏊',title:`Natation seuil`,meta:`2800 m • Midi`,desc:`300 éch · 4×50 éducatifs · 3×(400 à 1:48/100 r45" + 200 à 1:45/100 r30") · 6×50 vite r30" · 200 souple.`},
+    {type:'run',icon:'🏃',title:`Tempo 3×12'`,meta:`~13 km • Soir (au frais)`,desc:`15' EF · 3×12' à 5:45/km, r=3' trot · 10' calme. Maintien au chaud 20' après.`}
   ],
-  [d(2026,3,14)]: [
-    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'2h15 vélo + 15\' run',desc:'2h15 à 70–75% FTP, inclure 3×10\' à seuil si ressenti bon. Enchaîner immédiatement 15\' run facile.'}
+  [d(2026,7,17)]: [
+    {type:'chaleur',icon:'🔥',title:`Marche rapide surhabillée`,meta:`35 min • Journée chaude`,desc:`Repos sportif. Marche RPE 2–3 avec manches longues + coupe-vent : substitut du sauna, élévation de la température centrale sans fatigue musculaire. Hydratation + sodium après.`}
   ],
-  [d(2026,3,15)]: [
-    {type:'run',icon:'🏃',title:'Long run',meta:'1h15 • Facile',desc:'Allure facile 6\'10–6\'30/km. Objectif : fondation aérobie, rester confortable.'}
+  [d(2026,7,18)]: [
+    {type:'bike',icon:'🚴',title:`Sortie vallonnée + brick`,meta:`4h30 + 20' CAP • Départ 7h`,desc:`1h endurance · 3×20' allure IM (RPE 6/10, 75–80% FCmax, cadence 80–90) sur bosses longues, r=15' endurance · retour endurance — la dernière heure se fera dans la chaleur montante, c'est voulu. Brick : 20' CAP à 6:20/km. Nutrition course : 70–80 g glucides/h.`}
   ],
-  // WEEK 2 — 16–22 mars
-  [d(2026,3,16)]: [
-    {type:'swim',icon:'🏊',title:'Natation technique',meta:'45 min • Midi',desc:'Technique + 8×100m modéré. Récupération 20–30\' entre répétitions.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers, mobilité.'}
+  [d(2026,7,19)]: [
+    {type:'run',icon:'🏃',title:`Sortie longue`,meta:`1h45 (~15 km) • Départ tôt`,desc:`1h EF (6:50–7:10/km) · 40' allure IM (6:20/km) · 5' calme.`}
   ],
-  [d(2026,3,17)]: [
-    {type:'run',icon:'🏃',title:'Intervalles 5×1km',meta:'50 min • Soir',desc:'5×1 km à 4\'00/km, récupération 3\' entre chaque.'}
+  // ===== SEMAINE 2 — 20–26 juillet · DÉCHARGE avant les 7 Majeurs (~7h + week-end) =====
+  [d(2026,7,20)]: [
+    {type:'swim',icon:'🏊',title:`Natation souple technique`,meta:`2000 m • Midi`,desc:`300 éch · 8×50 éducatifs · 6×100 à 1:50/100 r20" · 4×50 vite r30" · 200 souple.`},
+    {type:'renfo',icon:'💪',title:`Renfo léger + chaleur passive`,meta:`30 min • Soir`,desc:`Poids de corps uniquement (semaine de décharge). Maintien au chaud 25' + douche chaude.`}
   ],
-  [d(2026,3,18)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km, allure conversation.'}
+  [d(2026,7,21)]: [
+    {type:'run',icon:'🏃',title:`Rappel intensité 8×300 m`,meta:`~9 km • Soir`,desc:`20' EF · 8×300 m à 4:50/km, r=1' trot · 10' calme. Le rappel d'intensité suffit, pas plus. Maintien au chaud 20' après.`}
   ],
-  [d(2026,3,19)]: [
-    {type:'swim',icon:'🏊',title:'Natation endurance + drills',meta:'40 min • Midi',desc:'Endurance + drills spécifiques nage crawl.'},
-    {type:'run',icon:'🏃',title:'Tempo run',meta:'30–40 min • Soir',desc:'30–40\' à 4\'30–4\'40/km allure tempo contrôlée.'}
+  [d(2026,7,22)]: [
+    {type:'run',icon:'🏃',title:`EF très souple`,meta:`45 min • Fin de matinée`,desc:`7:15/km, chaleur douce, hydratation avec électrolytes.`}
   ],
-  [d(2026,3,21)]: [
-    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'3h vélo + 20\' run',desc:'3h incl. 2×20\' à seuil (RPE 7/10). Brick : 20\' run immédiatement après.'}
+  [d(2026,7,23)]: [
+    {type:'swim',icon:'🏊',title:`Natation souple`,meta:`1500 m • Midi`,desc:`Technique et souplesse uniquement, aucune intensité.`},
+    {type:'run',icon:'🏃',title:`EF + lignes droites`,meta:`30 min • Soir`,desc:`30' EF + 4 lignes droites. Préparation du vélo : transmission, pneus, ravitaillement.`}
   ],
-  [d(2026,3,22)]: [
-    {type:'run',icon:'🏃',title:'Long run',meta:'1h30 • Facile',desc:'1h30 allure facile. Bien s\'hydrater.'}
+  [d(2026,7,24)]: [
+    {type:'rest',icon:'😴',title:`Repos complet avant les 7 Majeurs`,meta:`Voyage`,desc:`Pas d'exposition chaleur aujourd'hui : on arrive 100% frais. Hydratation, sieste si possible, coucher tôt.`}
   ],
-  // WEEK 3 — 23–29 mars
-  [d(2026,3,23)]: [
-    {type:'swim',icon:'🏊',title:'Natation technique',meta:'45 min • Midi',desc:'Technique + 10×100m.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers, mobilité.'}
+  [d(2026,7,25)]: [
+    {type:'bike',icon:'🚴',title:`LES 7 MAJEURS — Jour 1`,meta:`Cols • RPE 5–6 max`,desc:`Le plus gros bloc vélo de la prépa : gestion stricte. RPE 5–6 maxi dans les cols. 80–90 g glucides/h dès la première heure, 500–750 ml/h selon chaleur, avec sodium. Aucune course à pied ce week-end.`}
   ],
-  [d(2026,3,24)]: [
-    {type:'run',icon:'🏃',title:'VMA courte',meta:'50 min • Soir',desc:'12×400m à 3\'50/km, récupération 90\' entre chaque.'}
+  [d(2026,7,26)]: [
+    {type:'bike',icon:'🚴',title:`LES 7 MAJEURS — Jour 2`,meta:`Cols • RPE 5–6 max`,desc:`Finir en se disant qu'on aurait pu en faire plus. Même stratégie nutrition que le jour 1. Bonus : deux journées entières en montagne l'été = exposition chaleur, l'acclimatation ne régresse pas.`}
   ],
-  [d(2026,3,25)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  // ===== SEMAINE 3 — 27 juillet–2 août · RÉCUPÉRATION puis REPRISE (~11h) =====
+  [d(2026,7,27)]: [
+    {type:'rest',icon:'😴',title:`Récupération post-7 Majeurs`,meta:`Repos complet`,desc:`Priorité absolue : la récupération. Option : 20' de nage très souple si les jambes le demandent. Pas de renfo, pas d'exposition chaleur.`}
   ],
-  [d(2026,3,26)]: [
-    {type:'swim',icon:'🏊',title:'Natation endurance',meta:'40 min • Midi',desc:'Endurance douce, travail respiration.'}
+  [d(2026,7,28)]: [
+    {type:'swim',icon:'🏊',title:`Natation récup`,meta:`2000 m • Midi ou soir`,desc:`400 souple · 6×100 (50 éduc / 50 nage) r20" · 4×100 à 1:55/100 r20" · 200 dos · 200 souple. Pas de course à pied aujourd'hui.`}
   ],
-  [d(2026,3,28)]: [
-    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'3h15 vélo + 25\' run',desc:'3h15 endurance, incl. 3×15\' à seuil. Brick : 25\' run après.'}
+  [d(2026,7,29)]: [
+    {type:'run',icon:'🏃',title:`EF reprise`,meta:`50 min`,desc:`7:00/km. Au frais si les jambes sont encore lourdes, sinon chaleur douce.`}
   ],
-  [d(2026,3,29)]: [
-    {type:'run',icon:'🏃',title:'Long run progressif',meta:'1h40',desc:'1h40. Si ressenti bon, ajouter 20\' à allure marathon en fin de sortie.'}
+  [d(2026,7,30)]: [
+    {type:'swim',icon:'🏊',title:`Natation seuil`,meta:`2800 m • Midi`,desc:`300 éch · 4×50 éducatifs · 10×100 à 1:45/100 r20" · 300 pull · 4×50 vite r30" · 200 souple.`},
+    {type:'run',icon:'🏃',title:`Tempo de reprise 2×15'`,meta:`Soir (au frais)`,desc:`15' EF · 2×15' à 5:50/km, r=3' · 10' calme. Maintien au chaud 20' après. Si la fatigue des 7 Majeurs déborde (FC de repos élevée, jambes vides) : basculer cette séance en EF et garder la structure du week-end.`}
   ],
-  // WEEK 4 — 30 mars–2 avril (3–7 indisponibles)
-  [d(2026,3,30)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Séance libre, technique ou endurance selon forme.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers, mobilité.'}
+  [d(2026,7,31)]: [
+    {type:'chaleur',icon:'🔥',title:`Marche rapide surhabillée`,meta:`35 min • Journée chaude`,desc:`Repos sportif. RPE 2–3, manches longues + coupe-vent. Hydratation + sodium après.`}
   ],
-  [d(2026,3,31)]: [
-    {type:'run',icon:'🏃',title:'Intervalles 6×1km',meta:'55 min • Soir',desc:'6×1 km à 4\'00/km, récupération 3\'.'}
+  [d(2026,8,1)]: [
+    {type:'bike',icon:'🚴',title:`Vélo vallonné + brick`,meta:`4h + 30' CAP`,desc:`1h endurance · 2×30' allure IM, r=15' endurance · retour endurance. Brick 30' : 15' à 6:20/km + 15' EF.`}
   ],
-  [d(2026,4,1)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  [d(2026,8,2)]: [
+    {type:'run',icon:'🏃',title:`Sortie longue`,meta:`1h50 (~16 km) • Départ tôt`,desc:`1h10 EF · 35' allure IM (6:20/km) · 5' calme.`}
   ],
-  [d(2026,4,2)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
-    {type:'run',icon:'🏃',title:'Tempo 40\'',meta:'40 min • Soir',desc:'Allure tempo 4\'30–4\'40/km.'}
+  // ===== SEMAINE 4 — 3–9 août · SEMAINE PIC (~16h) =====
+  [d(2026,8,3)]: [
+    {type:'swim',icon:'🏊',title:`Natation volume`,meta:`3000 m • Midi`,desc:`400 éch · 6×50 éducatifs · 5×200 à 1:52/100 r30" · 8×100 à 1:47/100 r20" · 4×50 sprint r30" · 200 souple.`},
+    {type:'renfo',icon:'💪',title:`Renfo (dernière séance chargée) + chaleur`,meta:`45 min • Soir`,desc:`Dernière séance de renfo chargée de la prépa. Maintien au chaud 25' + douche chaude. Semaine la plus grosse : sommeil prioritaire (8h+), pas d'à-côtés fatigants.`}
   ],
-  // WEEK 5 — 8–12 avril (6–7 indisponibles)
-  [d(2026,4,8)]: [
-    {type:'run',icon:'🏃',title:'10 km facile (reprise)',meta:'40 min • Soir',desc:'10 km à 6\'/km. Reprise douce après indisponibilité.'}
+  [d(2026,8,4)]: [
+    {type:'run',icon:'🏃',title:`Intervalles longs 5×1000 m`,meta:`~13 km • Soir`,desc:`20' EF · 5×1000 m à 5:00/km, r=1'30 trot · 10' calme. Maintien au chaud 20' après.`}
   ],
-  [d(2026,4,9)]: [
-    {type:'swim',icon:'🏊',title:'Natation — reprise',meta:'45 min • Midi',desc:'Reprise douce, technique, pas d\'effort intense.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, mobilité.'}
+  [d(2026,8,5)]: [
+    {type:'run',icon:'🏃',title:`EF avec bloc chaleur`,meta:`1h15`,desc:`Dont 30' en milieu de journée au chaud. 6:50–7:10/km, pilotage FC/RPE.`}
   ],
-  [d(2026,4,10)]: [
-    {type:'swim',icon:'🏊',title:'Natation option',meta:'40 min • Midi',desc:'Séance optionnelle si énergie disponible.'}
+  [d(2026,8,6)]: [
+    {type:'swim',icon:'🏊',title:`Simulation : 2000 m continu`,meta:`3200 m • Midi`,desc:`400 éch · 4×50 éducatifs · 2000 m continu à allure IM 1:50/100 (si possible en eau libre ou en combinaison) · 4×100 à 1:45/100 r20" · 200 souple.`},
+    {type:'run',icon:'🏃',title:`Tempo 3×15'`,meta:`~15 km • Soir`,desc:`15' EF · 3×15' à 5:45/km, r=3' · 10' calme. Maintien au chaud 20' après.`}
   ],
-  [d(2026,4,11)]: [
-    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'3h vélo + 20\' run',desc:'Rythme facile, reprise en douceur. Brick 20\' run.'}
+  [d(2026,8,7)]: [
+    {type:'chaleur',icon:'🔥',title:`Marche rapide surhabillée`,meta:`35–40 min • Journée chaude`,desc:`Repos sportif. RPE 2–3, surhabillé. Hydratation + sodium après.`}
   ],
-  [d(2026,4,12)]: [
-    {type:'run',icon:'🏃',title:'Long run facile',meta:'1h30',desc:'1h30 allure facile. Reprise progressive.'}
+  [d(2026,8,8)]: [
+    {type:'bike',icon:'🚴',title:`SORTIE CLÉ + brick`,meta:`5h30 + 30' CAP • Départ 6h30–7h`,desc:`Parcours accidenté : 1h endurance · 3×40' allure IM, r=15–20' endurance · retour. Répétition générale nutrition : 80–90 g glucides/h, produits du jour J uniquement. Brick 30' à 6:20/km. Les deux dernières heures dans la chaleur : c'est la répétition thermique.`}
   ],
-  // WEEK 6 — 13–19 avril (Build 1)
-  [d(2026,4,13)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min • Soir',desc:'Gainage, fessiers.'}
+  [d(2026,8,9)]: [
+    {type:'run',icon:'🏃',title:`Sortie longue max`,meta:`2h10 (~19 km) • Départ tôt`,desc:`1h EF · 3×15' allure IM (6:20/km), r=5' EF · 10' calme. Dernière très longue sortie à pied de la prépa.`}
   ],
-  [d(2026,4,14)]: [
-    {type:'run',icon:'🏃',title:'Intervalles 8×800m',meta:'55 min • Soir',desc:'8×800m à 4\'00/km, récupération 2\'.'}
+  // ===== SEMAINE 5 — 10–16 août · AFFÛTAGE 1 (~10h, −35%) =====
+  [d(2026,8,10)]: [
+    {type:'swim',icon:'🏊',title:`Natation`,meta:`2500 m • Midi`,desc:`300 éch · 4×50 éducatifs · 3×(300 à 1:48/100 r45" + 100 vite r30") · 4×50 souple · 200 souple.`},
+    {type:'renfo',icon:'💪',title:`Dernier renfo (léger)`,meta:`30 min • Soir`,desc:`Poids de corps uniquement — dernière séance de renfo de la prépa. Douche chaude après.`}
   ],
-  [d(2026,4,15)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  [d(2026,8,11)]: [
+    {type:'run',icon:'🏃',title:`Intervalles 6×800 m`,meta:`~11 km • Soir`,desc:`20' EF · 6×800 m à 4:55/km, r=1'30 trot · 10' calme.`}
   ],
-  [d(2026,4,16)]: [
-    {type:'swim',icon:'🏊',title:'Natation endurance',meta:'40 min • Midi',desc:'Endurance + travail technique.'},
-    {type:'run',icon:'🏃',title:'Tempo 45\'',meta:'45 min • Soir',desc:'45\' à allure tempo.'}
+  [d(2026,8,12)]: [
+    {type:'run',icon:'🏃',title:`EF + lignes droites`,meta:`50 min`,desc:`EF 6:50–7:10/km + 6 lignes droites. Chaleur douce acceptée : l'acclimatation est acquise, on entretient.`}
   ],
-  [d(2026,4,18)]: [
-    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'3h30 vélo + 25\' run',desc:'3h30 incl. 3×20\' à seuil. Brick : 25\' run après.'}
+  [d(2026,8,13)]: [
+    {type:'swim',icon:'🏊',title:`Natation`,meta:`2200 m • Midi`,desc:`300 éch · 4×50 éducatifs · 8×100 à 1:45/100 r20" · 400 allure IM (1:50/100) · 200 souple.`},
+    {type:'run',icon:'🏃',title:`Tempo 2×12'`,meta:`Soir`,desc:`15' EF · 2×12' à 5:45/km, r=3' · 10' calme.`}
   ],
-  [d(2026,4,19)]: [
-    {type:'run',icon:'🏃',title:'Long run',meta:'1h45',desc:'1h45. Ajouter 20\' à marathon pace en fin si ressenti bon.'}
+  [d(2026,8,14)]: [
+    {type:'chaleur',icon:'🔥',title:`Dernière exposition chaleur`,meta:`30 min • Marche surhabillée`,desc:`Repos sportif. Dernière exposition chaleur dédiée de la prépa — l'acclimatation tient ensuite 7 jours sans problème.`}
   ],
-  // WEEK 7 — 20–26 avril (Build 2)
-  [d(2026,4,20)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, mobilité.'}
+  [d(2026,8,15)]: [
+    {type:'bike',icon:'🚴',title:`Vélo + brick`,meta:`3h30 + 20' CAP`,desc:`1h endurance · 2×25' allure IM, r=15' · retour endurance. Brick 20' à 6:20/km. Dernier réglage position / matériel.`}
   ],
-  [d(2026,4,21)]: [
-    {type:'run',icon:'🏃',title:'Fartlek / 6×1km',meta:'55 min • Soir',desc:'Fartlek ou 6×1 km selon humeur. Rester à l\'effort soutenu.'}
+  [d(2026,8,16)]: [
+    {type:'run',icon:'🏃',title:`Sortie longue réduite`,meta:`1h20`,desc:`50' EF · 25' allure IM (6:20/km) · 5' calme.`}
   ],
-  [d(2026,4,22)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
+  // ===== SEMAINE 6 — 17–23 août · SEMAINE COURSE (~4h avant le jour J) =====
+  [d(2026,8,17)]: [
+    {type:'swim',icon:'🏊',title:`Natation souple`,meta:`1800 m • Midi`,desc:`400 éch · 6×50 éducatifs · 6×100 à 1:50/100 r20" · 6×50 vite r30" · 200 souple. Pas de renfo ni d'exposition chaleur cette semaine : toute la fraîcheur accumulée va vers dimanche.`}
   ],
-  [d(2026,4,23)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
-    {type:'run',icon:'🏃',title:'Seuil 40\'',meta:'40 min • Soir',desc:'40\' seuil contrôlé.'}
+  [d(2026,8,18)]: [
+    {type:'run',icon:'🏃',title:`Rappel 30/30`,meta:`40 min`,desc:`20' EF · 6×(30" à 4:45/km / 30" trot) · 10' calme.`}
   ],
-  [d(2026,4,25)]: [
-    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'4h vélo + 30\' run',desc:'4h endurance, incl. 2×30\' à seuil. Brick : 30\' run après.'}
+  [d(2026,8,19)]: [
+    {type:'bike',icon:'🚴',title:`Vélo souple + rappels`,meta:`1h`,desc:`1h souple + 3×3' allure IM. Révision complète du vélo.`}
   ],
-  [d(2026,4,26)]: [
-    {type:'run',icon:'🏃',title:'Long run progressif',meta:'2h',desc:'2h allure progressive, commencer facile puis monter.'}
+  [d(2026,8,20)]: [
+    {type:'swim',icon:'🏊',title:`Natation souple`,meta:`1200 m • Midi`,desc:`Très facile. 20' de CAP en EF facultatif. Logistique / voyage vers Vichy.`}
   ],
-  // WEEK 8 — 27 avril – 3 mai
-  [d(2026,4,27)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, fessiers.'}
+  [d(2026,8,21)]: [
+    {type:'swim',icon:'🏊',title:`Reco plan d'eau (option)`,meta:`15–20 min max`,desc:`Retrait du dossard, repérage T1/T2. Reconnaissance du plan d'eau si créneau ouvert. Début du carb loading : cible 10–12 g de glucides/kg/jour vendredi et samedi.`}
   ],
-  [d(2026,4,28)]: [
-    {type:'run',icon:'🏃',title:'Intervalles',meta:'50 min • Soir',desc:'Séance intervalles selon forme.'}
+  [d(2026,8,22)]: [
+    {type:'bike',icon:'🚴',title:`Activation vélo`,meta:`30 min`,desc:`Pédalage fluide avec 3×2' à allure course.`},
+    {type:'run',icon:'🏃',title:`Activation CAP`,meta:`15 min`,desc:`Footing très léger avec 3 accélérations progressives.`},
+    {type:'swim',icon:'🏊',title:`Activation nage (option)`,meta:`10 min`,desc:`Facultative. Ensuite : dépose des sacs, jambes surélevées, hydratation + sodium, poursuite du carb loading.`}
   ],
-  [d(2026,4,29)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
-  ],
-  [d(2026,4,30)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
-    {type:'run',icon:'🏃',title:'Tempo',meta:'45 min • Soir',desc:'Tempo run.'}
-  ],
-  [d(2026,5,2)]: [
-    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'4h15 vélo + 30\' run',desc:'4h15 incl. 3×20\' à seuil. Brick : 30\' run après. Tester nutrition.'}
-  ],
-  [d(2026,5,3)]: [
-    {type:'run',icon:'🏃',title:'Long run',meta:'2h15',desc:'2h15 allure facile à modérée.'}
-  ],
-  // WEEK 9 — 4–7 mai (8–10 indisponibles)
-  [d(2026,5,4)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, mobilité.'}
-  ],
-  [d(2026,5,5)]: [
-    {type:'run',icon:'🏃',title:'Intervalles',meta:'50 min • Soir',desc:'Séance intervalles.'}
-  ],
-  [d(2026,5,6)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
-  ],
-  [d(2026,5,7)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
-    {type:'run',icon:'🏃',title:'Tempo',meta:'45 min • Soir',desc:'Tempo run seuil.'}
-  ],
-  // WEEK 10 — 11–17 mai (Build 4)
-  [d(2026,5,11)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, fessiers.'}
-  ],
-  [d(2026,5,12)]: [
-    {type:'run',icon:'🏃',title:'Intervalles',meta:'55 min • Soir',desc:'Intervalles course.'}
-  ],
-  [d(2026,5,13)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
-  ],
-  [d(2026,5,14)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
-    {type:'run',icon:'🏃',title:'Seuil 45\'',meta:'45 min • Soir',desc:'45\' allure seuil.'}
-  ],
-  [d(2026,5,16)]: [
-    {type:'bike',icon:'🚴',title:'Vélo long + Brick',meta:'4h30 vélo + 30\' run',desc:'4h30 incl. 3×25\' à seuil. Brick : 30\' run après. Tester nutrition/hydratation.'}
-  ],
-  [d(2026,5,17)]: [
-    {type:'run',icon:'🏃',title:'Long run',meta:'2h30',desc:'2h30. Ajouter 30\' à marathon pace en fin si OK.'}
-  ],
-  // WEEK 11 — 18–24 mai (Spécifique 1)
-  [d(2026,5,18)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, fessiers.'}
-  ],
-  [d(2026,5,19)]: [
-    {type:'run',icon:'🏃',title:'Tempo long',meta:'50 min • Soir',desc:'Tempo long 50\' : 10\' facile, 30\' tempo 4\'40/km, 10\' cool-down.'}
-  ],
-  [d(2026,5,20)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
-  ],
-  [d(2026,5,21)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
-    {type:'run',icon:'🏃',title:'Seuil',meta:'45 min • Soir',desc:'Seuil.'}
-  ],
-  [d(2026,5,23)]: [
-    {type:'bike',icon:'🚴',title:'Simulation nutrition vélo',meta:'5h vélo + 30\' run',desc:'5h — simulation COMPLÈTE nutrition/hydratation tenue de course. Brick 30\' run après. Objectif principal : tester stratégie nutrition.'}
-  ],
-  [d(2026,5,24)]: [
-    {type:'run',icon:'🏃',title:'Long run marathon',meta:'2h45',desc:'2h45 rythme marathon progressif. Phase spécifique.'}
-  ],
-  // WEEK 12 — 25–31 mai (très allégée)
-  [d(2026,5,25)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Séance technique.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage léger.'}
-  ],
-  [d(2026,5,26)]: [
-    {type:'run',icon:'🏃',title:'Intervalles légers',meta:'45 min • Soir',desc:'Intervalles légers, ne pas se surpasser avant la période d\'indisponibilité.'}
-  ],
-  [d(2026,5,31)]: [
-    {type:'bike',icon:'🚴',title:'Reprise douce',meta:'1h30 vélo OU 45\' run',desc:'Vélo facile 1h30 ou run 45\' selon énergie. Ne pas forcer.'}
-  ],
-  // WEEK 13 — 1–5 juin (6–7 indisponibles)
-  [d(2026,6,1)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, mobilité.'}
-  ],
-  [d(2026,6,2)]: [
-    {type:'run',icon:'🏃',title:'Intervalles',meta:'55 min • Soir',desc:'Intervalles course spécifique.'}
-  ],
-  [d(2026,6,3)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
-  ],
-  [d(2026,6,4)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
-    {type:'run',icon:'🏃',title:'Tempo 45\'',meta:'45 min • Soir',desc:'Tempo 45\'.'}
-  ],
-  [d(2026,6,5)]: [
-    {type:'bike',icon:'🚴',title:'Brick (vendredi)',meta:'2h vélo + 20\' run',desc:'Si 6–7 juin indisponibles : brick avancé au vendredi. 2h vélo + 20\' run.'}
-  ],
-  // WEEK 14 — 8–14 juin (Peaking)
-  [d(2026,6,8)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'45 min • Midi',desc:'Technique + séries.'},
-    {type:'renfo',icon:'💪',title:'Renforcement',meta:'30 min',desc:'Gainage, fessiers.'}
-  ],
-  [d(2026,6,9)]: [
-    {type:'run',icon:'🏃',title:'Course spécifique',meta:'55 min • Soir',desc:'10–12 km avec 6 km à marathon pace (5\'40/km). Objectif : ressentir le rythme cible.'}
-  ],
-  [d(2026,6,10)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km.'}
-  ],
-  [d(2026,6,11)]: [
-    {type:'swim',icon:'🏊',title:'Natation',meta:'40 min • Midi',desc:'Endurance.'},
-    {type:'run',icon:'🏃',title:'Seuil court',meta:'40 min • Soir',desc:'Seuil court.'}
-  ],
-  [d(2026,6,13)]: [
-    {type:'bike',icon:'🚴',title:'Simulation course PEAK',meta:'5h–5h30 vélo + 30\' run',desc:'5–5h30 — simulation complète : tenue de course, nutrition, intensité course. Brick 30\' run après à marathon pace. Séance clé !'}
-  ],
-  [d(2026,6,14)]: [
-    {type:'run',icon:'🏃',title:'Long run final',meta:'2h30–3h',desc:'2h30 à 3h avec rythme marathon cible en fin. Dernière grosse sortie.'}
-  ],
-  // WEEK 15 — 15–21 juin (Taper 1)
-  [d(2026,6,15)]: [
-    {type:'swim',icon:'🏊',title:'Natation facile',meta:'40 min • Midi',desc:'Facile, technique, plaisir. Pas d\'effort.'},
-    {type:'renfo',icon:'💪',title:'Renfo léger',meta:'20 min',desc:'Renfo léger, mobilité douce.'}
-  ],
-  [d(2026,6,16)]: [
-    {type:'run',icon:'🏃',title:'Allures marathon',meta:'40 min • Soir',desc:'40\' avec 3×5\' à marathon pace (5\'40/km). Rester frais.'}
-  ],
-  [d(2026,6,17)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min • Soir',desc:'10 km à 6\'/km. Taper en cours — conserver les jambes.'}
-  ],
-  [d(2026,6,18)]: [
-    {type:'swim',icon:'🏊',title:'Natation technique',meta:'30 min • Midi',desc:'Technique uniquement, très facile.'}
-  ],
-  [d(2026,6,19)]: [
-    {type:'bike',icon:'🚴',title:'Vélo facile',meta:'1h30',desc:'Pédalage fluide, cadence légère. Pas d\'effort.'}
-  ],
-  [d(2026,6,20)]: [
-    {type:'bike',icon:'🚴',title:'Vélo quelques accélérations',meta:'2h vélo + 15\' run',desc:'2h avec quelques accélérations courtes pour garder les sensations. Brick 15\' run.'}
-  ],
-  [d(2026,6,21)]: [
-    {type:'run',icon:'🏃',title:'Run facile',meta:'1h15',desc:'1h15 très facile. Profiter.'}
-  ],
-  // WEEK 16 — 22–28 juin (Taper final)
-  [d(2026,6,22)]: [
-    {type:'swim',icon:'🏊',title:'Natation très facile',meta:'30 min • Midi',desc:'Très facile. Sentir l\'eau. Mobilité.'}
-  ],
-  [d(2026,6,23)]: [
-    {type:'run',icon:'🏃',title:'Sortie très facile',meta:'30–40 min',desc:'Très facile. Garder les jambes légères.'}
-  ],
-  [d(2026,6,24)]: [
-    {type:'run',icon:'🏃',title:'10 km facile',meta:'40 min',desc:'10 km facile. Vérifier le matériel de course.'}
-  ],
-  [d(2026,6,25)]: [
-    {type:'swim',icon:'🏊',title:'Natation technique finale',meta:'20–30 min • Midi',desc:'Technique uniquement. Préparer la nutrition de course.'}
-  ],
-  [d(2026,6,26)]: [
-    {type:'bike',icon:'🚴',title:'Vélo très facile (optionnel)',meta:'45 min',desc:'Optionnel. Pédalage très léger ou repos complet. Préparer le matériel transition.'}
-  ],
-  [d(2026,6,28)]: [
-    {type:'run',icon:'🏃',title:'🏆 IRONMAN NICE — JOUR J',meta:'Race day • 28 juin 2026',desc:'Natation contrôlée. Vélo à puissance cible. 10–15 premiers km run très contrôlés. Objectif : 12h. PROFITE DE CHAQUE INSTANT ! 🔱'}
+  [d(2026,8,23)]: [
+    {type:'run',icon:'🏃',title:`🏆 IRONMAN VICHY — JOUR J`,meta:`Race day • Objectif sub-12h`,desc:`Natation régulière à 1:50/100, sans sprint de départ (objectif 1h15 avec T1). Vélo RPE 6 strict, première heure volontairement facile, 80–90 g glucides/h dès la 20e minute, lisser les bosses : plutôt perdre 1 km/h en montée que griller des cartouches (objectif 6h). Marathon : départ à 6:15–6:20/km maximum les 10 premiers km, glace/eau à chaque ravito, marche rapide 20" aux ravitos si nécessaire — ça coûte moins cher qu'une explosion au 30e (objectif 4h30). PROFITE DE CHAQUE INSTANT ! 🔱`}
   ],
 };
 
 // ==================== STATE ====================
-let completedSessions = JSON.parse(localStorage.getItem('triforge_completed') || '{}');
+let completedSessions = JSON.parse(localStorage.getItem('triforge_vichy_completed') || '{}');
 let currentCalMonth = new Date().getMonth();
 let currentCalYear = new Date().getFullYear();
 
 function saveCompleted() {
-  localStorage.setItem('triforge_completed', JSON.stringify(completedSessions));
+  localStorage.setItem('triforge_vichy_completed', JSON.stringify(completedSessions));
 }
 
 function getToday() {
@@ -853,11 +691,12 @@ function getWeekNumber(dateKey) {
 }
 
 function getPhase(weekNum) {
-  if (weekNum <= 4) return {name:'BASE', desc:'Construction des fondations aérobies. Volume modéré, technique.', color:'var(--swim)'};
-  if (weekNum <= 8) return {name:'BUILD', desc:'Augmentation du volume et de l\'intensité. Sorties longues progressives.', color:'var(--bike)'};
-  if (weekNum <= 12) return {name:'SPÉCIFIQUE', desc:'Simulations course, nutrition, intensités spécifiques Ironman.', color:'var(--run)'};
-  if (weekNum <= 14) return {name:'PEAKING', desc:'Volume max. Dernières séances longues. Pic de forme.', color:'var(--gold)'};
-  return {name:'TAPER', desc:'Réduction progressive. Fraîcheur maximale pour le jour J.', color:'var(--done)'};
+  if (weekNum <= 1) return {name:'VOLUME 1', desc:'Montée en charge : volume solide, allures spécifiques, début de l\'acclimatation chaleur (active + passive, sans sauna).', color:'var(--swim)'};
+  if (weekNum === 2) return {name:'DÉCHARGE', desc:'Volume réduit de ~40% pour arriver frais aux 7 Majeurs (25–26 juillet). Expositions chaleur maintenues sauf vendredi.', color:'var(--renfo)'};
+  if (weekNum === 3) return {name:'REPRISE', desc:'Récupération post-7 Majeurs en début de semaine, puis reprise progressive de la qualité.', color:'var(--bike)'};
+  if (weekNum === 4) return {name:'PIC', desc:'Semaine la plus chargée : sortie clé vélo 5h30, dernière très longue sortie CAP. Sommeil prioritaire (8h+).', color:'var(--gold)'};
+  if (weekNum === 5) return {name:'AFFÛTAGE', desc:'Volume −35%, intensité spécifique conservée. Entretien chaleur (2 expositions).', color:'var(--run)'};
+  return {name:'SEMAINE COURSE', desc:'Fraîcheur maximale : activation, carb loading, logistique. Aucune exposition chaleur. Objectif sub-12h.', color:'var(--done)'};
 }
 
 // ==================== COUNTDOWN ====================
@@ -882,7 +721,7 @@ function renderToday() {
   const wk = getWeekNumber(todayKey);
   const phase = getPhase(wk);
   document.getElementById('todayWeekDisplay').textContent =
-    `Semaine ${Math.min(wk,16)} • Phase ${phase.name}`;
+    `Semaine ${Math.min(wk,6)} • Phase ${phase.name}`;
 
   const sessionsDiv = document.getElementById('todaySessions');
   const sessions = PLAN[todayKey];
@@ -1005,7 +844,7 @@ function renderCalendar() {
     const sessions = PLAN[key] || [];
     const isToday = key === todayKey;
     const isUnavail = UNAVAILABLE.includes(key);
-    const isRace = key === '2026-06-28';
+    const isRace = key === '2026-08-23';
     const allDone = sessions.length > 0 && sessions.every((_,si) => completedSessions[`${key}_${si}`]);
 
     let cls = 'cal-day';
@@ -1037,10 +876,10 @@ function changeMonth(dir) {
 function dayClick(dateKey) {
   const sessions = PLAN[dateKey] || [];
   const isUnavail = UNAVAILABLE.includes(dateKey);
-  const isRace = dateKey === '2026-06-28';
+  const isRace = dateKey === '2026-08-23';
 
   document.getElementById('modalDate').textContent = formatDateKey(dateKey);
-  document.getElementById('modalTitle').textContent = isRace ? '🏆 IRONMAN NICE' : isUnavail ? '📵 Indisponible' : sessions.length ? 'Séances' : '💤 Repos';
+  document.getElementById('modalTitle').textContent = isRace ? '🏆 IRONMAN VICHY' : isUnavail ? '📵 Indisponible' : sessions.length ? 'Séances' : '💤 Repos';
 
   if (isUnavail) {
     document.getElementById('modalSessions').innerHTML = '<div class="rest-day-card">Jour indisponible — aucune séance prévue.</div>';
@@ -1131,10 +970,10 @@ function updateStats() {
 
   // Phase
   const wk = getWeekNumber(getToday());
-  const phase = getPhase(Math.min(wk,16));
+  const phase = getPhase(Math.min(wk,6));
   document.getElementById('phaseName').textContent = phase.name;
   document.getElementById('phaseDesc').textContent = phase.desc;
-  document.getElementById('phaseWeek').textContent = `Semaine ${Math.min(wk,16)} sur 16`;
+  document.getElementById('phaseWeek').textContent = `Semaine ${Math.min(wk,6)} sur 6`;
 }
 
 // ==================== NAVIGATION ====================
@@ -1163,7 +1002,7 @@ setInterval(updateCountdown, 60000);
 // Init calendar to March 2026 if before plan start
 const n = new Date();
 if (n < PLAN_START) {
-  currentCalMonth = 2; // March
+  currentCalMonth = 6; // Juillet
   currentCalYear = 2026;
 }
 </script>
